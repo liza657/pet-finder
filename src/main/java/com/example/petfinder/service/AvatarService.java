@@ -9,5 +9,5 @@ public interface AvatarService {
 
     void uploadAvatar(UUID userId,MultipartFile imageFile)throws IOException;
 
-    byte[] downloadAvatar(String avatar);
+    public byte[] downloadAvatar(UUID avatarId);
 }

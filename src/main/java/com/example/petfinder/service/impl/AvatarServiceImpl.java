@@ -14,10 +14,10 @@ import org.apache.commons.lang3.exception.ContextedRuntimeException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.zip.DataFormatException;
 
@@ -32,34 +32,45 @@ public class AvatarServiceImpl implements AvatarService {
     private final UserRepository userRepository;
 
     private final static String USER_NOT_FOUND = "User not found";
+    private final static String AVATAR_NOT_FOUND = "Avatar not found";
 
 
     @Override
+    @Transactional
     public void uploadAvatar(UUID userId, MultipartFile avatar) throws IOException {
         User user = findUserById(userId);
         checkPermission(userId);
-        var avatarToSave = Avatar.builder()
-                .name(avatar.getOriginalFilename())
-                .type(avatar.getContentType())
-                .imageData(ImageUtils.compressImage(avatar.getBytes()))
-                .build();
-        user.setAvatar(avatarToSave);
-        userRepository.save(user);
-        avatarRepository.save(avatarToSave);
+
+        if (!((user.getAvatar()) == null)) {
+            Avatar existingAvatar = user.getAvatar();
+            existingAvatar.setName(avatar.getOriginalFilename());
+            existingAvatar.setType(avatar.getContentType());
+            existingAvatar.setImageData(ImageUtils.compressImage(avatar.getBytes()));
+        } else {
+
+            var avatarToSave = Avatar.builder()
+                    .name(avatar.getOriginalFilename())
+                    .type(avatar.getContentType())
+                    .imageData(ImageUtils.compressImage(avatar.getBytes()))
+                    .user(user)
+                    .build();
+            user.setAvatar(avatarToSave);
+
+            avatarRepository.save(avatarToSave);
+        }
+
     }
 
     @Override
-    public byte[] downloadAvatar(String avatar) {
-        Optional<Avatar> dbAvatar = avatarRepository.findByName(avatar);
-        return dbAvatar.map(a -> {
-            try {
-                return ImageUtils.decompressImage(a.getImageData());
-            } catch (DataFormatException | IOException exception) {
-                throw new ContextedRuntimeException("Error downloading an image", exception)
-                        .addContextValue("Image ID", a.getId())
-                        .addContextValue("Image name", a);
-            }
-        }).orElse(null);
+    public byte[] downloadAvatar(UUID avatarId) {
+        Avatar avatar = findAvatarById(avatarId);
+        try {
+            return ImageUtils.decompressImage(avatar.getImageData());
+        } catch (DataFormatException | IOException exception) {
+            throw new ContextedRuntimeException("Error downloading an image", exception)
+                    .addContextValue("Image ID", avatar.getId())
+                    .addContextValue("Image name", avatar);
+        }
     }
 
     public User getCurrentUser() {
@@ -81,6 +92,11 @@ public class AvatarServiceImpl implements AvatarService {
 
     private User findUserById(UUID userId) {
         return userRepository.findById(userId).orElseThrow(() -> new EntityNotExistsException(String.format(USER_NOT_FOUND, userId)));
+    }
+
+
+    private Avatar findAvatarById(UUID avatarId) {
+        return avatarRepository.findById(avatarId).orElseThrow(() -> new EntityNotExistsException(AVATAR_NOT_FOUND));
     }
 
 }

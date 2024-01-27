@@ -87,8 +87,8 @@ public class User implements UserDetails {
     @JsonManagedReference
     private List<ConfirmationToken> confirmationTokens;
 
-    @OneToOne(cascade = CascadeType.ALL, optional = true)
-    @JoinColumn(name = "avatar_id", referencedColumnName = "id", nullable = true)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "avatar_id", referencedColumnName = "id")
     @JsonManagedReference
     private Avatar avatar;
 

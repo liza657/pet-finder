@@ -3,7 +3,6 @@ package com.example.petfinder.model.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.util.UUID;
@@ -28,10 +27,11 @@ public class Avatar {
     private String type;
 
     @Lob
-    @Column(name = "image_data", nullable = false, length = 100000)
+    @Column(name = "image_data", nullable = false, length = 1000000000)
     private byte[] imageData;
 
-    @OneToOne(mappedBy = "avatar")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     @JsonBackReference
     private User user;
 
