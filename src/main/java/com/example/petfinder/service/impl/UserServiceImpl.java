@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.userToView(user);
     }
 
-    private void checkPermission( UUID userId) {
+    private void checkPermission(UUID userId) {
 
         if (!getCurrentUser().getId().equals(userId)) {
             throw new PermissionException();
@@ -93,10 +93,6 @@ public class UserServiceImpl implements UserService {
 
     }
 
-
-    private boolean emailExists(String email) {
-        return userRepository.findUserByEmail(email).isPresent();
-    }
 
     public User getByUsername(String username) {
         return userRepository.findUserByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));

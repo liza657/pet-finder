@@ -30,9 +30,12 @@ public class Image {
     @Column(name = "image_data", length = 100000, nullable = false)
     private byte[] imageData;
 
-    @OneToOne(mappedBy = "image")
+    @OneToOne(mappedBy = "image1")
     @JsonBackReference
     private Animal animal;
+
+
+
 
     public Image(String name, String type, byte[] imageData) {
         this.name = name;

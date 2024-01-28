@@ -2,6 +2,7 @@ package com.example.petfinder.dto.animal.request;
 
 import com.example.petfinder.model.enums.Sex;
 import com.example.petfinder.model.enums.Size;
+import com.example.petfinder.model.enums.Sterilization;
 import com.example.petfinder.model.enums.Type;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,13 +11,19 @@ import java.time.LocalDate;
 
 public record AnimalUpdating(String name,
 
-                             LocalDate birthDate,
+                             LocalDate birthday,
 
                              BigDecimal weight,
 
-                             String description,
+                             String story,
 
-                             boolean sterilization,
+                             String breed,
+
+                             String traits,
+
+                             String healthHistory,
+
+                             Sterilization sterilization,
 
                              Sex sex,
 

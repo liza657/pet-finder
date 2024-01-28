@@ -1,7 +1,8 @@
-package respose;
+package com.example.petfinder.dto.animal.respose;
 
 import com.example.petfinder.model.entity.Image;
 import com.example.petfinder.model.enums.Sex;
+import com.example.petfinder.model.enums.Sterilization;
 import com.example.petfinder.model.enums.Type;
 
 import java.math.BigDecimal;
@@ -9,11 +10,11 @@ import java.time.LocalDate;
 
 public record AnimalCard(String name,
 
-                         LocalDate birthDate,
+                         LocalDate birthday,
 
                          BigDecimal weight,
 
-                         boolean sterilization,
+                         Sterilization sterilization,
 
                          Sex sex,
 
