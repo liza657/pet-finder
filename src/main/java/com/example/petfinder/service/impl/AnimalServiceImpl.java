@@ -4,6 +4,7 @@ import com.example.petfinder.dto.animal.request.AnimalCreation;
 import com.example.petfinder.dto.animal.request.AnimalUpdating;
 import com.example.petfinder.dto.animal.respose.AnimalCard;
 import com.example.petfinder.dto.animal.respose.AnimalView;
+import com.example.petfinder.exceptions.EntityIsAlreadyExists;
 import com.example.petfinder.exceptions.EntityNotExistsException;
 import com.example.petfinder.exceptions.PermissionException;
 import com.example.petfinder.mapper.AnimalMapper;
@@ -25,7 +26,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.zip.DataFormatException;
 
 @Service
@@ -34,15 +37,12 @@ import java.util.zip.DataFormatException;
 public class AnimalServiceImpl implements AnimalService {
     private final AnimalRepository animalRepository;
     private final UserRepository userRepository;
-
     private final ImageRepository imageRepository;
     private final AnimalMapper animalMapper;
-
     private final ImageMapper imageMapper;
     private final static String ANIMAL_NOT_FOUND = "Animal with id:%s not found";
-
+    private final static String ANIMAL_IS_ALREADY_ADDED = "Animal is already added";
     private static final String USER_WITH_LOGIN_NOT_FOUND = "User with email:%s not found";
-
     private static final String PERMISSION_DENIED = "Permission denied.";
 
 
@@ -50,7 +50,7 @@ public class AnimalServiceImpl implements AnimalService {
     public AnimalView addAnimal(AnimalCreation animalCreation) throws IOException, DataFormatException {
         User user = getCurrentUser();
         Animal animal = animalMapper.newToAnimal(animalCreation);
-
+        log.info(user.getEmail());
         animal.setOwner(user);
         animal.setStatus(Status.NEED_ADOPTION);
         animal = animalRepository.save(animal);
@@ -70,7 +70,6 @@ public class AnimalServiceImpl implements AnimalService {
     @Override
     public AnimalView updateAnimal(UUID animalId, AnimalUpdating animalUpdate) throws IOException, DataFormatException {
         checkPermission(animalId);
-
         Animal animal = findAnimalById(animalId);
         copyUpdateFieldsToAnimal(animalUpdate, animal);
         animal = animalRepository.save(animal);
@@ -81,6 +80,35 @@ public class AnimalServiceImpl implements AnimalService {
     public void deleteAnimal(UUID animalId) {
         checkPermission(animalId);
         animalRepository.deleteById(animalId);
+
+    }
+
+    @Override
+    public void addToFavorite(UUID animalId) {
+        User user = getCurrentUser();
+        Animal animal = findAnimalById(animalId);
+        if (!user.getFavoriteAnimals().contains(animal)) {
+            user.getFavoriteAnimals().add(animal);
+            userRepository.save(user);
+        } else throw new EntityIsAlreadyExists(ANIMAL_IS_ALREADY_ADDED);
+
+    }
+
+    @Override
+    public void deleteFromFavorite(UUID animalId) {
+        User user = getCurrentUser();
+        Animal animal = findAnimalById(animalId);
+        user.getFavoriteAnimals().remove(animal);
+        userRepository.save(user);
+
+    }
+
+    @Override
+    public Set<AnimalCard> getFavoriteAnimals() {
+        User user = getCurrentUser();
+        return user.getFavoriteAnimals().stream()
+                .map(animalMapper::animalToCard)
+                .collect(Collectors.toSet());
 
     }
 
@@ -127,7 +155,7 @@ public class AnimalServiceImpl implements AnimalService {
 
 
     public User getByUsername(String username) {
-        return userRepository.findUserByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return userRepository.findUserByEmail(username).orElseThrow(() -> new UsernameNotFoundException(USER_WITH_LOGIN_NOT_FOUND));
 
     }
 
@@ -138,7 +166,7 @@ public class AnimalServiceImpl implements AnimalService {
 
     private void checkPermission(UUID animalId) {
         if (!getCurrentUser().getAnimals().contains(findAnimalById(animalId))) {
-            throw new PermissionException();
+            throw new PermissionException(PERMISSION_DENIED);
         }
     }
 

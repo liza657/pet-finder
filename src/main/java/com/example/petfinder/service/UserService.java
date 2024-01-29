@@ -21,9 +21,6 @@ public interface UserService {
 
     void updateUser(UUID userId, UserUpdateRequest userUpdateRequest);
 
-//    void UpdateAvatar(UUID userId,)
-
-
     void updatePassword(PasswordUpdateRequest passwordUpdateRequest, UserDetails userDetails);
 
     void deleteUser(UUID userId);

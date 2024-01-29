@@ -7,6 +7,7 @@ import com.example.petfinder.dto.animal.respose.AnimalView;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.io.IOException;
+import java.util.Set;
 import java.util.UUID;
 import java.util.zip.DataFormatException;
 
@@ -16,10 +17,16 @@ public interface AnimalService {
 
     AnimalView getAnimalById(UUID animalId) throws DataFormatException, IOException;
 
-    public Page<AnimalCard> getAllAnimals(Pageable pageable);
+     Page<AnimalCard> getAllAnimals(Pageable pageable);
 
 
     AnimalView updateAnimal(UUID animalId, AnimalUpdating animalUpdate) throws IOException, DataFormatException;
 
     void deleteAnimal(UUID animalId);
+
+    void addToFavorite(UUID animalId);
+
+    void deleteFromFavorite(UUID animalId);
+
+    Set<AnimalCard> getFavoriteAnimals();
 }

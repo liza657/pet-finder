@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Set;
 import java.util.UUID;
 import java.util.zip.DataFormatException;
 
@@ -73,4 +74,19 @@ public class AnimalController {
 
     }
 
+    @PostMapping("add/{animalId}")
+    public void addAnimalToFavorite(@PathVariable("animalId") UUID animalId) {
+        animalService.addToFavorite(animalId);
+    }
+
+    @DeleteMapping("deleteFromFavorite/{animalId}")
+    public void deleteAnimalToFavorite(@PathVariable("animalId") UUID animalId) {
+        animalService.deleteFromFavorite(animalId);
+    }
+
+    @GetMapping("getAllFavorite")
+    public ResponseEntity<Set<AnimalCard>> getAllFavoriteAnimals() {
+        return ResponseEntity.status(HttpStatus.OK).body(animalService.getFavoriteAnimals());
+
+    }
 }

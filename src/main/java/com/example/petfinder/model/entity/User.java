@@ -5,6 +5,7 @@ import com.example.petfinder.model.enums.Sex;
 import com.example.petfinder.token.AccessToken;
 import com.example.petfinder.token.ConfirmationToken;
 import com.example.petfinder.token.ResetPasswordToken;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -91,6 +92,15 @@ public class User implements UserDetails {
     @JoinColumn(name = "avatar_id", referencedColumnName = "id")
     @JsonManagedReference
     private Avatar avatar;
+
+    @ManyToMany
+    @JoinTable(
+            name = "favorite",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "animal_id"))
+    @JsonBackReference
+    List<Animal> favoriteAnimals;
+
 
     public User(String email, String password, String firstName, String lastName, Role role, List<AccessToken> tokens) {
         this.email = email;
