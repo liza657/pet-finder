@@ -38,7 +38,7 @@ public class AnimalServiceImpl implements AnimalService {
     private final ImageRepository imageRepository;
     private final AnimalMapper animalMapper;
 
-    private ImageMapper imageMapper;
+    private final ImageMapper imageMapper;
     private final static String ANIMAL_NOT_FOUND = "Animal with id:%s not found";
 
     private static final String USER_WITH_LOGIN_NOT_FOUND = "User with email:%s not found";
@@ -90,25 +90,39 @@ public class AnimalServiceImpl implements AnimalService {
 
 
     private void copyUpdateFieldsToAnimal(AnimalUpdating animalUpdating, Animal animal) throws IOException {
-        Image image = (animalUpdating.image() != null) ? imageMapper.multiPartFileToImage(animalUpdating.image()) : null;
-
-        if (image != null) {
-            image = imageRepository.save(image);
+        Image image1 = (animalUpdating.getImage1() != null) ? imageMapper.multiPartFileToImage(animalUpdating.getImage1()) : null;
+        if (image1 != null) {
+            image1 = imageRepository.save(image1);
         }
-        animal.setName(animalUpdating.name());
-        animal.setType(animalUpdating.type());
-        animal.setWeight(animalUpdating.weight());
-        animal.setBirthday(animalUpdating.birthday());
-        animal.setImage1(image);
-        animal.setImage2(image);
-        animal.setImage3(image);
-        animal.setImage4(image);
-        animal.setSterilization(animalUpdating.sterilization());
-        animal.setStory(animalUpdating.story());
-        animal.setBreed(animalUpdating.breed());
-        animal.setTraits(animalUpdating.traits());
-        animal.setHealthHistory(animalUpdating.healthHistory());
-        animal.setSize(animalUpdating.size());
+
+        Image image2 = (animalUpdating.getImage2() != null) ? imageMapper.multiPartFileToImage(animalUpdating.getImage2()) : null;
+        if (image2 != null) {
+            image2 = imageRepository.save(image2);
+        }
+
+        Image image3 = (animalUpdating.getImage3() != null) ? imageMapper.multiPartFileToImage(animalUpdating.getImage3()) : null;
+        if (image3 != null) {
+            image3 = imageRepository.save(image3);
+        }
+
+        Image image4 = (animalUpdating.getImage4() != null) ? imageMapper.multiPartFileToImage(animalUpdating.getImage4()) : null;
+        if (image4 != null) {
+            image4 = imageRepository.save(image4);
+        }
+        animal.setName(animalUpdating.getName());
+        animal.setType(animalUpdating.getType());
+        animal.setWeight(animalUpdating.getWeight());
+        animal.setBirthday(animalUpdating.getBirthday());
+        animal.setImage1(image1);
+        animal.setImage2(image2);
+        animal.setImage3(image3);
+        animal.setImage4(image4);
+        animal.setSterilization(animalUpdating.getSterilization());
+        animal.setStory(animalUpdating.getStory());
+        animal.setBreed(animalUpdating.getBreed());
+        animal.setTraits(animalUpdating.getTraits());
+        animal.setHealthHistory(animalUpdating.getHealthHistory());
+        animal.setSize(animalUpdating.getSize());
     }
 
 

@@ -32,10 +32,11 @@ public class Image {
 
     @OneToOne(mappedBy = "image1")
     @JsonBackReference
-    private Animal animal;
+    private Animal animal1;
 
-
-
+    @OneToOne(mappedBy = "image2")
+    @JsonBackReference
+    private Animal animal2;
 
     public Image(String name, String type, byte[] imageData) {
         this.name = name;

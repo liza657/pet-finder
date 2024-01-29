@@ -67,21 +67,26 @@ public class Animal {
     @Column(name = "status", nullable = false)
     private Status status;
 
-    @OneToOne(mappedBy = "animal", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, optional = true)
+    @JoinColumn(name = "image1_id", referencedColumnName = "id", nullable = true)
     @JsonManagedReference
     private Image image1;
 
-    @OneToOne(mappedBy = "animal", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, optional = true)
+    @JoinColumn(name = "image2_id", referencedColumnName = "id", nullable = true)
     @JsonManagedReference
     private Image image2;
 
-    @OneToOne(mappedBy = "animal", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, optional = true)
+    @JoinColumn(name = "image3_id", referencedColumnName = "id", nullable = true)
     @JsonManagedReference
     private Image image3;
 
-    @OneToOne(mappedBy = "animal", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, optional = true)
+    @JoinColumn(name = "image4_id", referencedColumnName = "id", nullable = true)
     @JsonManagedReference
     private Image image4;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "owner_id", referencedColumnName = "id", nullable = false)
     @ToString.Exclude

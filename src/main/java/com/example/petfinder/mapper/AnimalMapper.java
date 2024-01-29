@@ -31,8 +31,8 @@ public abstract class AnimalMapper {
 
         byte[] image1 = (animal.getImage1() != null) ?
                 ImageUtils.decompressImage(animal.getImage1().getImageData()) : null;
-        byte[] image2 = (animal.getImage1() != null) ?
-                ImageUtils.decompressImage(animal.getImage1().getImageData()) : null;
+        byte[] image2 = (animal.getImage2() != null) ?
+                ImageUtils.decompressImage(animal.getImage2().getImageData()) : null;
         byte[] image3 = (animal.getImage1() != null) ?
                 ImageUtils.decompressImage(animal.getImage1().getImageData()) : null;
         byte[] image4 = (animal.getImage1() != null) ?
@@ -60,29 +60,29 @@ public abstract class AnimalMapper {
     public Animal newToAnimal(AnimalCreation animalCreation) throws IOException {
         Animal animal = new Animal();
 
-        Image image1 = (animalCreation.image1() != null)
-                ? imageMapper.multiPartFileToImage(animalCreation.image1()) : null;
+        Image image1 = (animalCreation.getImage1() != null)
+                ? imageMapper.multiPartFileToImage(animalCreation.getImage1()) : null;
 
-        Image image2 = (animalCreation.image1() != null)
-                ? imageMapper.multiPartFileToImage(animalCreation.image1()) : null;
+        Image image2 = (animalCreation.getImage2() != null)
+                ? imageMapper.multiPartFileToImage(animalCreation.getImage2()) : null;
 
-        Image image3 = (animalCreation.image1() != null)
-                ? imageMapper.multiPartFileToImage(animalCreation.image1()) : null;
+        Image image3 = (animalCreation.getImage3()!= null)
+                ? imageMapper.multiPartFileToImage(animalCreation.getImage3()) : null;
 
-        Image image4 = (animalCreation.image1() != null)
-                ? imageMapper.multiPartFileToImage(animalCreation.image1()) : null;
+        Image image4 = (animalCreation.getImage4() != null)
+                ? imageMapper.multiPartFileToImage(animalCreation.getImage4()) : null;
 
-        animal.setName(animalCreation.name());
-        animal.setBirthday(animalCreation.birthday());
-        animal.setBreed(animal.getBreed());
-        animal.setHealthHistory(animal.getHealthHistory());
-        animal.setTraits(animal.getTraits());
-        animal.setStory(animalCreation.story());
-        animal.setSex(animalCreation.sex());
-        animal.setSize(animalCreation.size());
-        animal.setWeight(animalCreation.weight());
-        animal.setType(animalCreation.type());
-        animal.setSterilization(animalCreation.sterilization());
+        animal.setName(animalCreation.getName());
+        animal.setBirthday(animalCreation.getBirthday());
+        animal.setBreed(animalCreation.getBreed());
+        animal.setHealthHistory(animalCreation.getHealthHistory());
+        animal.setTraits(animalCreation.getTraits());
+        animal.setStory(animalCreation.getStory());
+        animal.setSex(animalCreation.getSex());
+        animal.setSize(animalCreation.getSize());
+        animal.setWeight(animalCreation.getWeight());
+        animal.setType(animalCreation.getType());
+        animal.setSterilization(animalCreation.getSterilization());
         animal.setImage1(image1);
         animal.setImage2(image2);
         animal.setImage3(image3);
@@ -93,6 +93,11 @@ public abstract class AnimalMapper {
     @Autowired
     public void setUserMapper(UserMapper userMapper) {
         this.userMapper = userMapper;
+    }
+
+    @Autowired
+    public void setImageMapper(ImageMapper imageMapper) {
+        this.imageMapper = imageMapper;
     }
 
 }

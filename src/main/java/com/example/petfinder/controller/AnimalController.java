@@ -30,7 +30,10 @@ public class AnimalController {
                                                 @RequestPart("image2") MultipartFile image2,
                                                 @RequestPart("image3") MultipartFile image3,
                                                 @RequestPart("image4") MultipartFile image4) throws DataFormatException, IOException {
-
+        animal.setImage1(image1);
+        animal.setImage2(image2);
+        animal.setImage3(image3);
+        animal.setImage4(image4);
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 animalService.addAnimal(animal)
         );
@@ -42,7 +45,16 @@ public class AnimalController {
     }
 
     @PutMapping("update/{animalId}")
-    public ResponseEntity<AnimalView> updateAnimal(@PathVariable("animalId") UUID animalId, @RequestBody AnimalUpdating animal) throws DataFormatException, IOException {
+    public ResponseEntity<AnimalView> updateAnimal(@PathVariable("animalId") UUID animalId,
+                                                   @RequestPart("animal") AnimalUpdating animal,
+                                                   @RequestPart("image1") MultipartFile image1,
+                                                   @RequestPart("image2") MultipartFile image2,
+                                                   @RequestPart("image3") MultipartFile image3,
+                                                   @RequestPart("image4") MultipartFile image4) throws DataFormatException, IOException {
+        animal.setImage1(image1);
+        animal.setImage2(image2);
+        animal.setImage3(image3);
+        animal.setImage4(image4);
         return ResponseEntity.status(HttpStatus.OK).body(animalService.updateAnimal(animalId, animal));
 
     }
