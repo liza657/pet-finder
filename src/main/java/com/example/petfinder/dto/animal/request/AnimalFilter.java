@@ -13,5 +13,5 @@ public record AnimalFilter(
 
                            Type type,
 
-                           LocalDate birthday) {
+                           Age age) {
 }

@@ -16,7 +16,7 @@ import java.time.LocalDate;
 public class AnimalUpdating {
     private final String name;
 
-    private final LocalDate birthday;
+    private final Age age;
 
     private final BigDecimal weight;
 
@@ -44,7 +44,7 @@ public class AnimalUpdating {
     @JsonCreator
     public AnimalUpdating(
             @JsonProperty("name") String name,
-            @JsonProperty("birthday") LocalDate birthday,
+            @JsonProperty("age") Age age,
             @JsonProperty("story") String story,
             @JsonProperty("breed") String breed,
             @JsonProperty("traits") String traits,
@@ -56,7 +56,7 @@ public class AnimalUpdating {
             @JsonProperty("type") Type type) {
 
         this.name = name;
-        this.birthday = birthday;
+        this.age = age;
         this.story = story;
         this.breed = breed;
         this.traits = traits;

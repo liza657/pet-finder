@@ -17,7 +17,7 @@ import java.time.LocalDate;
 public class AnimalCreation {
     private final String name;
 
-    private final LocalDate birthday;
+    private final Age age;
     private final String story;
 
     private final String breed;
@@ -42,7 +42,7 @@ public class AnimalCreation {
     @JsonCreator
     public AnimalCreation(
             @JsonProperty("name") String name,
-            @JsonProperty("birthday") LocalDate birthday,
+            @JsonProperty("age") Age age,
             @JsonProperty("story") String story,
             @JsonProperty("breed") String breed,
             @JsonProperty("traits") String traits,
@@ -54,7 +54,7 @@ public class AnimalCreation {
             @JsonProperty("type") Type type) {
 
         this.name = name;
-        this.birthday = birthday;
+        this.age = age;
         this.story = story;
         this.breed = breed;
         this.traits = traits;

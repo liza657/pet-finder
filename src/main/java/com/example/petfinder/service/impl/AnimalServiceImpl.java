@@ -30,6 +30,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -151,7 +153,7 @@ public class AnimalServiceImpl implements AnimalService {
         animal.setName(animalUpdating.getName());
         animal.setType(animalUpdating.getType());
         animal.setWeight(animalUpdating.getWeight());
-        animal.setBirthday(animalUpdating.getBirthday());
+        animal.setAge(animalUpdating.getAge());
         animal.setImage1(image1);
         animal.setImage2(image2);
         animal.setImage3(image3);
@@ -180,5 +182,6 @@ public class AnimalServiceImpl implements AnimalService {
             throw new PermissionException(PERMISSION_DENIED);
         }
     }
+
 
 }

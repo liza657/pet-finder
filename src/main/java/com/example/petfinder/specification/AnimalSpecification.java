@@ -2,10 +2,7 @@ package com.example.petfinder.specification;
 
 import com.example.petfinder.dto.animal.request.AnimalFilter;
 import com.example.petfinder.model.entity.Animal;
-import com.example.petfinder.model.enums.Sex;
-import com.example.petfinder.model.enums.Size;
-import com.example.petfinder.model.enums.Sterilization;
-import com.example.petfinder.model.enums.Type;
+import com.example.petfinder.model.enums.*;
 import org.springframework.data.jpa.domain.Specification;
 
 public class AnimalSpecification {
@@ -15,7 +12,8 @@ public class AnimalSpecification {
                 .where(hasType(animalFilter.type()))
                 .and(hasSize(animalFilter.size()))
                 .and(hasSex(animalFilter.sex()))
-                .and(hasSterilization(animalFilter.sterilization()));
+                .and(hasSterilization(animalFilter.sterilization()))
+                .and(hasAge(animalFilter.age()));
     }
 
     private static Specification<Animal> hasType(Type type) {
@@ -36,5 +34,9 @@ public class AnimalSpecification {
     private static Specification<Animal> hasSterilization(Sterilization sterilization) {
         return (root, query, criteriaBuilder) -> sterilization == null ? criteriaBuilder.conjunction()
                 : criteriaBuilder.equal(root.get("sterilization"), sterilization);
+    }
+
+    private static Specification<Animal> hasAge(Age age) {
+        return (root, query, criteriaBuilder) -> age == null ? criteriaBuilder.conjunction() : criteriaBuilder.equal(root.get("age"), age);
     }
 }

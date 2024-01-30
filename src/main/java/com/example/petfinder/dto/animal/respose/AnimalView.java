@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 public record AnimalView(String name,
 
-                         LocalDate birthday,
+                         Age age,
 
                          BigDecimal weight,
 

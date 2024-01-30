@@ -29,9 +29,6 @@ public class Animal {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "birthday")
-    private LocalDate birthday;
-
     @Column(name = "weight", nullable = false)
     private BigDecimal weight;
 
@@ -50,6 +47,11 @@ public class Animal {
     @Enumerated(EnumType.STRING)
     @Column(name = "sex", nullable = false)
     private Sex sex;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "age", nullable = false)
+    private Age age;
+
 
     @Enumerated(EnumType.STRING)
     @Column(name = "size", nullable = false)

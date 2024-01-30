@@ -40,7 +40,7 @@ public abstract class AnimalMapper {
 
         return new AnimalView(
                 animal.getName(),
-                animal.getBirthday(),
+                animal.getAge(),
                 animal.getWeight(),
                 animal.getStory(),
                 animal.getBreed(),
@@ -73,7 +73,7 @@ public abstract class AnimalMapper {
                 ? imageMapper.multiPartFileToImage(animalCreation.getImage4()) : null;
 
         animal.setName(animalCreation.getName());
-        animal.setBirthday(animalCreation.getBirthday());
+        animal.setAge(animalCreation.getAge());
         animal.setBreed(animalCreation.getBreed());
         animal.setHealthHistory(animalCreation.getHealthHistory());
         animal.setTraits(animalCreation.getTraits());
