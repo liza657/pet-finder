@@ -1,6 +1,7 @@
 package com.example.petfinder.service.impl;
 
 import com.example.petfinder.dto.animal.request.AnimalCreation;
+import com.example.petfinder.dto.animal.request.AnimalFilter;
 import com.example.petfinder.dto.animal.request.AnimalUpdating;
 import com.example.petfinder.dto.animal.respose.AnimalCard;
 import com.example.petfinder.dto.animal.respose.AnimalView;
@@ -17,10 +18,13 @@ import com.example.petfinder.repository.AnimalRepository;
 import com.example.petfinder.repository.ImageRepository;
 import com.example.petfinder.repository.UserRepository;
 import com.example.petfinder.service.AnimalService;
+import com.example.petfinder.specification.AnimalSpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -110,6 +114,13 @@ public class AnimalServiceImpl implements AnimalService {
                 .map(animalMapper::animalToCard)
                 .collect(Collectors.toSet());
 
+    }
+
+    @Override
+    public Page<AnimalCard> searchAnimals(AnimalFilter filter, Integer pageNumber) {
+        Specification<Animal> specification = AnimalSpecification.filterBy(filter);
+        Page<Animal> pageResult = animalRepository.findAll(specification, PageRequest.of(pageNumber, 20));
+        return pageResult.map(animalMapper::animalToCard);
     }
 
     private Animal findAnimalById(UUID animalId) {

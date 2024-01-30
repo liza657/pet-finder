@@ -1,6 +1,7 @@
 package com.example.petfinder.controller;
 
 import com.example.petfinder.dto.animal.request.AnimalCreation;
+import com.example.petfinder.dto.animal.request.AnimalFilter;
 import com.example.petfinder.dto.animal.request.AnimalUpdating;
 import com.example.petfinder.dto.animal.respose.AnimalCard;
 import com.example.petfinder.dto.animal.respose.AnimalView;
@@ -88,5 +89,13 @@ public class AnimalController {
     public ResponseEntity<Set<AnimalCard>> getAllFavoriteAnimals() {
         return ResponseEntity.status(HttpStatus.OK).body(animalService.getFavoriteAnimals());
 
+    }
+
+    @GetMapping("search")
+    public ResponseEntity<Page<AnimalCard>> searchStartups( AnimalFilter filter,
+                                                             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                animalService.searchAnimals(filter, pageNumber)
+        );
     }
 }

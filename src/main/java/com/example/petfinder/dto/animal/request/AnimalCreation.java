@@ -1,9 +1,6 @@
 package com.example.petfinder.dto.animal.request;
 
-import com.example.petfinder.model.enums.Sex;
-import com.example.petfinder.model.enums.Size;
-import com.example.petfinder.model.enums.Sterilization;
-import com.example.petfinder.model.enums.Type;
+import com.example.petfinder.model.enums.*;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
