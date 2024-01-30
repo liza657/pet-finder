@@ -2,7 +2,7 @@ package com.example.petfinder.model.enums;
 
 public enum Age {
 
-    LESS_THAN_1("<1"),
+    LESS_THAN_1("< 1"),
     ONE("1"),
     TWO("2"),
     THREE("3"),
