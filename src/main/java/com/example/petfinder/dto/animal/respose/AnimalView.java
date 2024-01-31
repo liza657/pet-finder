@@ -3,11 +3,10 @@ package com.example.petfinder.dto.animal.respose;
 import com.example.petfinder.model.enums.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 public record AnimalView(String name,
 
-                         Age age,
+                         String age,
 
                          BigDecimal weight,
 

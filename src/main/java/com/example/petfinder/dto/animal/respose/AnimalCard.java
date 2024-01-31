@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 
 public record AnimalCard(String name,
 
-                         Age age,
+                         String age,
 
                          BigDecimal weight,
 

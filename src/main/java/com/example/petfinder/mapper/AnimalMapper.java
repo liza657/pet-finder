@@ -25,7 +25,19 @@ public abstract class AnimalMapper {
     protected ImageMapper imageMapper;
     protected ImageRepository imageRepository;
 
-    public abstract AnimalCard animalToCard(Animal animal);
+    public AnimalCard animalToCard(Animal animal) {
+
+        return new AnimalCard(
+                animal.getName(),
+                animal.getAge().getValue(),
+                animal.getWeight(),
+                animal.getSterilization(),
+                animal.getSex(),
+                animal.getType(),
+                animal.getImage1()
+
+        );
+    }
 
     public AnimalView animalToView(Animal animal) throws DataFormatException, IOException {
 
@@ -40,7 +52,7 @@ public abstract class AnimalMapper {
 
         return new AnimalView(
                 animal.getName(),
-                animal.getAge(),
+                animal.getAge().getValue(),
                 animal.getWeight(),
                 animal.getStory(),
                 animal.getBreed(),
@@ -66,7 +78,7 @@ public abstract class AnimalMapper {
         Image image2 = (animalCreation.getImage2() != null)
                 ? imageMapper.multiPartFileToImage(animalCreation.getImage2()) : null;
 
-        Image image3 = (animalCreation.getImage3()!= null)
+        Image image3 = (animalCreation.getImage3() != null)
                 ? imageMapper.multiPartFileToImage(animalCreation.getImage3()) : null;
 
         Image image4 = (animalCreation.getImage4() != null)
