@@ -23,9 +23,9 @@ public abstract class AnimalMapper {
 
     protected UserMapper userMapper;
     protected ImageMapper imageMapper;
-    protected ImageRepository imageRepository;
 
-    public AnimalCard animalToCard(Animal animal) {
+    public AnimalCard animalToCard(Animal animal)  {
+
 
         return new AnimalCard(
                 animal.getName(),
@@ -35,12 +35,11 @@ public abstract class AnimalMapper {
                 animal.getSex(),
                 animal.getType(),
                 animal.getImage1()
-
         );
     }
 
     public AnimalView animalToView(Animal animal) throws DataFormatException, IOException {
-
+//        ImageUtils.decompressImage(avatar.getImageData()
         byte[] image1 = (animal.getImage1() != null) ?
                 ImageUtils.decompressImage(animal.getImage1().getImageData()) : null;
         byte[] image2 = (animal.getImage2() != null) ?

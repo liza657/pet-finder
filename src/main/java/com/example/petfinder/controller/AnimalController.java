@@ -86,7 +86,7 @@ public class AnimalController {
     }
 
     @GetMapping("getAllFavorite")
-    public ResponseEntity<Set<AnimalCard>> getAllFavoriteAnimals() {
+    public ResponseEntity<Set<AnimalCard>> getAllFavoriteAnimals() throws DataFormatException, IOException {
         return ResponseEntity.status(HttpStatus.OK).body(animalService.getFavoriteAnimals());
 
     }

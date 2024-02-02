@@ -68,6 +68,15 @@ public class User implements UserDetails {
     @JsonManagedReference
     private Set<Animal> animals;
 
+    @OneToMany(
+            mappedBy = "user",
+            cascade = {CascadeType.ALL},
+            orphanRemoval = true
+    )
+    @ToString.Exclude
+    @JsonManagedReference
+    private Set<LostAnimal> lostAnimals;
+
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;

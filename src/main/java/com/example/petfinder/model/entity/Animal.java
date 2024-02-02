@@ -2,6 +2,7 @@ package com.example.petfinder.model.entity;
 
 
 import com.example.petfinder.model.enums.*;
+import com.example.petfinder.model.enums.Age;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -12,7 +13,6 @@ import lombok.ToString;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -94,13 +94,6 @@ public class Animal {
     @ToString.Exclude
     @JsonBackReference
     private User owner;
-
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-//    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-//    @ToString.Exclude
-//    @JsonBackReference
-//    private User user;
-
 
     public Animal() {
 

@@ -23,14 +23,14 @@ public record AnimalView(String name,
 
                          Type type,
 
-                         Status status,
+                         LostAnimalStatus status,
 
-                         Image image1,
+                         byte[] image1,
 
-                         Image image2,
+                         byte[] image2,
 
-                         Image image3,
+                         byte[] image3,
 
-                         Image image4) {
+                         byte[] image4) {
 
 }

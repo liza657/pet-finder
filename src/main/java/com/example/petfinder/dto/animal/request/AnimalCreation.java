@@ -1,6 +1,7 @@
 package com.example.petfinder.dto.animal.request;
 
 import com.example.petfinder.model.enums.*;
+import com.example.petfinder.model.enums.Age;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -9,7 +10,6 @@ import lombok.ToString;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @Getter
 @ToString

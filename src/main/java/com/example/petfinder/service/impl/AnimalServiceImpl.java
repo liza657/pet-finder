@@ -56,7 +56,6 @@ public class AnimalServiceImpl implements AnimalService {
     public AnimalView addAnimal(AnimalCreation animalCreation) throws IOException, DataFormatException {
         User user = getCurrentUser();
         Animal animal = animalMapper.newToAnimal(animalCreation);
-        log.info(user.getEmail());
         animal.setOwner(user);
         animal.setStatus(Status.NEED_ADOPTION);
         animal = animalRepository.save(animal);

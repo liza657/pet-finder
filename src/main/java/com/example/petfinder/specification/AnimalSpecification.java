@@ -3,6 +3,7 @@ package com.example.petfinder.specification;
 import com.example.petfinder.dto.animal.request.AnimalFilter;
 import com.example.petfinder.model.entity.Animal;
 import com.example.petfinder.model.enums.*;
+import com.example.petfinder.model.enums.Age;
 import org.springframework.data.jpa.domain.Specification;
 
 public class AnimalSpecification {

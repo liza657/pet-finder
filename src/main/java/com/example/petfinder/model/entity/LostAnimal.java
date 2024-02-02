@@ -16,7 +16,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@Table(name = "found_animal")
+@Table(name = "lost_animal")
 @NoArgsConstructor
 public class LostAnimal {
     @Id
@@ -47,16 +47,16 @@ public class LostAnimal {
     private Size size;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "age", nullable = false)
+    @Column(name = "age", nullable = true)
     private Age age;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false)
+    @Column(name = "type", nullable = true)
     private Type type;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private AdvertStatus status;
+    private LostAnimalStatus status;
 
     @OneToOne(cascade = CascadeType.ALL, optional = true)
     @JoinColumn(name = "image1_id", referencedColumnName = "id", nullable = true)

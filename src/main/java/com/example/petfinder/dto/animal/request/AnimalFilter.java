@@ -1,8 +1,7 @@
 package com.example.petfinder.dto.animal.request;
 
 import com.example.petfinder.model.enums.*;
-
-import java.time.LocalDate;
+import com.example.petfinder.model.enums.Age;
 
 public record AnimalFilter(
                            Sterilization sterilization,

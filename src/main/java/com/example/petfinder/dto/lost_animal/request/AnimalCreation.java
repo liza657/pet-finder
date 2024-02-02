@@ -16,7 +16,6 @@ import java.time.LocalDate;
 public class AnimalCreation {
     private final String name;
 
-
     private final String distinguishingFeatures;
 
     private final String about;
@@ -38,7 +37,7 @@ public class AnimalCreation {
     private final Type type;
 
 
-    private final AdvertStatus status;
+    private final LostAnimalStatus status;
 
 
     private MultipartFile image1;
@@ -63,7 +62,7 @@ public class AnimalCreation {
             @JsonProperty("size") Size size,
             @JsonProperty("age") Age age,
             @JsonProperty("type") Type type,
-            @JsonProperty("status") AdvertStatus status) {
+            @JsonProperty("status") LostAnimalStatus status) {
 
         this.name = name;
         this.distinguishingFeatures = distinguishingFeatures;
