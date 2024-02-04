@@ -26,7 +26,7 @@ import java.util.zip.DataFormatException;
 public class AnimalController {
     private final AnimalService animalService;
 
-    @PostMapping("create")
+    @PostMapping()
     public ResponseEntity<AnimalView> addAnimal(@RequestPart("animal") AnimalCreation animal,
                                                 @RequestPart("image1") MultipartFile image1,
                                                 @RequestPart("image2") MultipartFile image2,
@@ -41,12 +41,12 @@ public class AnimalController {
         );
     }
 
-    @DeleteMapping("delete/{animalId}")
+    @DeleteMapping("{animalId}")
     public void deleteAnimal(@PathVariable("animalId") UUID animalId) {
         animalService.deleteAnimal(animalId);
     }
 
-    @PutMapping("update/{animalId}")
+    @PutMapping("{animalId}")
     public ResponseEntity<AnimalView> updateAnimal(@PathVariable("animalId") UUID animalId,
                                                    @RequestPart("animal") AnimalUpdating animal,
                                                    @RequestPart("image1") MultipartFile image1,
@@ -62,12 +62,12 @@ public class AnimalController {
     }
 
 
-    @GetMapping("get/{animalId}")
+    @GetMapping("{animalId}")
     public ResponseEntity<AnimalView> getAnimal(@PathVariable("animalId") UUID animalId) throws DataFormatException, IOException {
         return ResponseEntity.status(HttpStatus.OK).body(animalService.getAnimalById(animalId));
     }
 
-    @GetMapping("getAll")
+    @GetMapping("")
     public ResponseEntity<Page<AnimalCard>> getAllAnimals(@RequestParam(defaultValue = "0") int page,
                                                           @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
