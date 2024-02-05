@@ -25,7 +25,7 @@ public class LostAnimalController {
 
     private final LostAnimalService animalService;
 
-    @PostMapping("create")
+    @PostMapping()
     public ResponseEntity<AnimalView> createLostAnimal(@RequestPart("animal") AnimalCreation animal,
                                                        @RequestPart("image1") MultipartFile image1,
                                                        @RequestPart("image2") MultipartFile image2,
@@ -40,14 +40,14 @@ public class LostAnimalController {
         );
     }
 
-    @GetMapping("getAll")
+    @GetMapping()
     public ResponseEntity<Page<AnimalCard>> getAllAnimals(@RequestParam(defaultValue = "0") int page,
                                                           @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.status(HttpStatus.OK).body(animalService.getAllAnimals(pageable));
     }
 
-    @PutMapping("update/{animalId}")
+    @PutMapping("{animalId}")
     public ResponseEntity<AnimalView> updateAnimal(@PathVariable("animalId") UUID animalId,
                                                    @RequestPart("animal") AnimalUpdating animal,
                                                    @RequestPart("image1") MultipartFile image1,
