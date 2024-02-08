@@ -86,6 +86,7 @@ public class AnimalRepositoryTests {
         userRepository.save(user);
         animalRepository.save(animal1);
         animalRepository.save(animal2);
+
         List<Animal> savedAnimals = animalRepository.findAll();
 
         Assertions.assertThat(savedAnimals).isNotNull();
