@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface AvatarService {
 
-    void uploadAvatar(UUID userId,MultipartFile imageFile)throws IOException;
+    void uploadAvatar(UUID userId, MultipartFile imageFile) throws IOException;
 
-    public byte[] downloadAvatar(UUID avatarId);
+    byte[] downloadAvatar(UUID avatarId);
 }

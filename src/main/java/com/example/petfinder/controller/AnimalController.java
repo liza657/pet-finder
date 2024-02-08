@@ -29,9 +29,9 @@ public class AnimalController {
     @PostMapping()
     public ResponseEntity<AnimalView> addAnimal(@RequestPart("animal") AnimalCreation animal,
                                                 @RequestPart("image1") MultipartFile image1,
-                                                @RequestPart("image2") MultipartFile image2,
-                                                @RequestPart("image3") MultipartFile image3,
-                                                @RequestPart("image4") MultipartFile image4) throws DataFormatException, IOException {
+                                                @RequestPart(value = "image2", required = false) MultipartFile image2,
+                                                @RequestPart(value = "image3", required = false) MultipartFile image3,
+                                                @RequestPart(value = "image4", required = false) MultipartFile image4) throws DataFormatException, IOException {
         animal.setImage1(image1);
         animal.setImage2(image2);
         animal.setImage3(image3);
@@ -86,14 +86,14 @@ public class AnimalController {
     }
 
     @GetMapping("getAllFavorite")
-    public ResponseEntity<Set<AnimalCard>> getAllFavoriteAnimals() throws DataFormatException, IOException {
+    public ResponseEntity<Set<AnimalCard>> getAllFavoriteAnimals(){
         return ResponseEntity.status(HttpStatus.OK).body(animalService.getFavoriteAnimals());
 
     }
 
     @GetMapping("search")
-    public ResponseEntity<Page<AnimalCard>> searchStartups( AnimalFilter filter,
-                                                             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber) {
+    public ResponseEntity<Page<AnimalCard>> searchStartups(AnimalFilter filter,
+                                                           @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber) {
         return ResponseEntity.status(HttpStatus.OK).body(
                 animalService.searchAnimals(filter, pageNumber)
         );

@@ -20,14 +20,14 @@ public class Image {
     @UuidGenerator
     private UUID id;
 
-    @Column(name = "`name`", nullable = false)
+    @Column(name = "`name`")
     private String name;
 
-    @Column(name = "`type`", nullable = false)
+    @Column(name = "`type`")
     private String type;
 
     @Lob
-    @Column(name = "image_data", length = 100000, nullable = false)
+    @Column(name = "image_data", length = 100000)
     private byte[] imageData;
 
     @OneToOne(mappedBy = "image1")

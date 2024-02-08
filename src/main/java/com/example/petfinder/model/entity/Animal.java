@@ -6,10 +6,7 @@ import com.example.petfinder.model.enums.Age;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.math.BigDecimal;
@@ -18,6 +15,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @Table(name = "animal")
 public class Animal {
@@ -35,13 +33,13 @@ public class Animal {
     @Column(name = "story")
     private String story;
 
-    @Column(name = "breed", nullable = true)
+    @Column(name = "breed")
     private String breed;
 
-    @Column(name = "traits", nullable = true)
+    @Column(name = "traits")
     private String traits;
 
-    @Column(name = "health_history", nullable = true)
+    @Column(name = "health_history")
     private String healthHistory;
 
     @Enumerated(EnumType.STRING)
@@ -69,23 +67,23 @@ public class Animal {
     @Column(name = "status", nullable = false)
     private Status status;
 
-    @OneToOne(cascade = CascadeType.ALL, optional = true)
-    @JoinColumn(name = "image1_id", referencedColumnName = "id", nullable = true)
+    @OneToOne(cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "image1_id", referencedColumnName = "id",nullable = false)
     @JsonManagedReference
     private Image image1;
 
-    @OneToOne(cascade = CascadeType.ALL, optional = true)
-    @JoinColumn(name = "image2_id", referencedColumnName = "id", nullable = true)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "image2_id", referencedColumnName = "id")
     @JsonManagedReference
     private Image image2;
 
-    @OneToOne(cascade = CascadeType.ALL, optional = true)
-    @JoinColumn(name = "image3_id", referencedColumnName = "id", nullable = true)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "image3_id", referencedColumnName = "id")
     @JsonManagedReference
     private Image image3;
 
-    @OneToOne(cascade = CascadeType.ALL, optional = true)
-    @JoinColumn(name = "image4_id", referencedColumnName = "id", nullable = true)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "image4_id", referencedColumnName = "id")
     @JsonManagedReference
     private Image image4;
 
