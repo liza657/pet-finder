@@ -4,6 +4,7 @@ import com.example.petfinder.model.entity.Animal;
 import com.example.petfinder.model.entity.User;
 import com.example.petfinder.model.enums.*;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -26,25 +27,11 @@ public class AnimalRepositoryTests {
     @Autowired
     private UserRepository userRepository;
 
-    @Test
-    public void AnimalRepository_Save_ReturnSavedAnimal() {
+    private User user;
 
-        Animal animal = Animal.builder()
-                .name("Kyrylo")
-                .story("small cat")
-                .breed("fef")
-                .age(TWO).build();
-
-        Animal savedAnimal = animalRepository.save(animal);
-
-        Assertions.assertThat(savedAnimal).isNotNull();
-        Assertions.assertThat(savedAnimal.getId()).isNotNull();
-
-    }
-
-    @Test
-    public void AnimalRepository_FindAll_ReturnMoreThanOneAnimal() {
-        User user = User.builder()
+    @BeforeEach
+    public void createUser() {
+        user = User.builder()
                 .firstName("sfes")
                 .lastName("fse")
                 .sex(Sex.MALE)
@@ -55,33 +42,23 @@ public class AnimalRepositoryTests {
                 .phoneNumber("fgergfe")
                 .role(Role.USER)
                 .build();
+    }
 
+    @Test
+    public void AnimalRepository_Save_ReturnSavedAnimal() {
+        Animal animal = Animal.builder().build();
 
-        Animal animal1 = Animal.builder()
-                .name("Kyrylo")
-                .story("small cat")
-                .breed("fef")
-                .sex(Sex.MALE)
-                .size(Size.MIDDLE)
-                .status(Status.ADOPTED)
-                .sterilization(Sterilization.FALSE)
-                .type(Type.CAT)
-                .weight(BigDecimal.ONE)
-                .owner(user)
-                .age(TWO).build();
+        Animal savedAnimal = animalRepository.save(animal);
 
-        Animal animal2 = Animal.builder()
-                .name("Kyrylo")
-                .story("small cat")
-                .breed("fef")
-                .status(Status.ADOPTED)
-                .sterilization(Sterilization.FALSE)
-                .type(Type.CAT)
-                .weight(BigDecimal.ONE)
-                .sex(Sex.MALE)
-                .size(Size.MIDDLE)
-                .owner(user)
-                .age(TWO).build();
+        Assertions.assertThat(savedAnimal).isNotNull();
+        Assertions.assertThat(savedAnimal.getId()).isNotNull();
+
+    }
+
+    @Test
+    public void AnimalRepository_FindAll_ReturnMoreThanOneAnimal() {
+        Animal animal1 = createAnimal();
+        Animal animal2 = createAnimal();
 
         userRepository.save(user);
         animalRepository.save(animal1);
@@ -96,74 +73,26 @@ public class AnimalRepositoryTests {
 
     @Test
     public void AnimalRepository_FindById_ReturnAnimal() {
-        User user = User.builder()
-                .firstName("sfes")
-                .lastName("fse")
-                .sex(Sex.MALE)
-                .biography("esfe")
-                .email("john.doe@example.com")
-                .birtDate(LocalDate.of(1990, 5, 15))
-                .password("fawerfwfeA234")
-                .phoneNumber("fgergfe")
-                .role(Role.USER)
-                .build();
-
-
-        Animal animal1 = Animal.builder()
-                .name("Kyrylo")
-                .story("small cat")
-                .breed("fef")
-                .sex(Sex.MALE)
-                .size(Size.MIDDLE)
-                .status(Status.ADOPTED)
-                .sterilization(Sterilization.FALSE)
-                .type(Type.CAT)
-                .weight(BigDecimal.ONE)
-                .owner(user)
-                .age(TWO).build();
+        Animal animal = createAnimal();
 
         userRepository.save(user);
-        animalRepository.save(animal1);
+        animalRepository.save(animal);
 
-        Animal animal = animalRepository.findById(animal1.getId()).get();
+        Animal foundAnimal = animalRepository.findById(animal.getId()).get();
 
-        Assertions.assertThat(animal).isNotNull();
+        Assertions.assertThat(foundAnimal).isNotNull();
 
     }
 
 
     @Test
     public void AnimalRepository_UpdateAnimal_ReturnAnimalNotNull() {
-        User user = User.builder()
-                .firstName("sfes")
-                .lastName("fse")
-                .sex(Sex.MALE)
-                .biography("esfe")
-                .email("john.doe@example.com")
-                .birtDate(LocalDate.of(1990, 5, 15))
-                .password("fawerfwfeA234")
-                .phoneNumber("fgergfe")
-                .role(Role.USER)
-                .build();
-
-
-        Animal animal1 = Animal.builder()
-                .name("Kyrylo")
-                .story("small cat")
-                .breed("fef")
-                .sex(Sex.MALE)
-                .size(Size.MIDDLE)
-                .status(Status.ADOPTED)
-                .sterilization(Sterilization.FALSE)
-                .type(Type.CAT)
-                .weight(BigDecimal.ONE)
-                .owner(user)
-                .age(TWO).build();
+        Animal animal = createAnimal();
 
         userRepository.save(user);
-        animalRepository.save(animal1);
+        animalRepository.save(animal);
 
-        Animal savedAnimal = animalRepository.findById(animal1.getId()).get();
+        Animal savedAnimal = animalRepository.findById(animal.getId()).get();
 
         savedAnimal.setBreed("n");
         savedAnimal.setName("kara");
@@ -175,21 +104,20 @@ public class AnimalRepositoryTests {
 
     @Test
     public void AnimalRepository_DeleteById_ReturnAnimalIsEmpty() {
+        Animal animal = createAnimal();
 
-        User user = User.builder()
-                .firstName("sfes")
-                .lastName("fse")
-                .sex(Sex.MALE)
-                .biography("esfe")
-                .email("john.doe@example.com")
-                .birtDate(LocalDate.of(1990, 5, 15))
-                .password("fawerfwfeA234")
-                .phoneNumber("fgergfe")
-                .role(Role.USER)
-                .build();
+        userRepository.save(user);
+        animalRepository.save(animal);
 
+        animalRepository.deleteById(animal.getId());
+        Optional<Animal> animalReturn = animalRepository.findById(animal.getId());
 
-        Animal animal1 = Animal.builder()
+        Assertions.assertThat(animalReturn).isEmpty();
+
+    }
+
+    private Animal createAnimal() {
+        return Animal.builder()
                 .name("Kyrylo")
                 .story("small cat")
                 .breed("fef")
@@ -201,15 +129,6 @@ public class AnimalRepositoryTests {
                 .weight(BigDecimal.ONE)
                 .owner(user)
                 .age(TWO).build();
-
-        userRepository.save(user);
-        animalRepository.save(animal1);
-
-        animalRepository.deleteById(animal1.getId());
-        Optional<Animal> animalReturn = animalRepository.findById(animal1.getId());
-
-        Assertions.assertThat(animalReturn).isEmpty();
-
     }
 
 

@@ -26,11 +26,11 @@ public class LostAnimalController {
     private final LostAnimalService animalService;
 
     @PostMapping()
-    public ResponseEntity<AnimalView> createLostAnimal(@RequestPart("animal") AnimalCreation animal,
-                                                       @RequestPart("image1") MultipartFile image1,
-                                                       @RequestPart("image2") MultipartFile image2,
-                                                       @RequestPart("image3") MultipartFile image3,
-                                                       @RequestPart("image4") MultipartFile image4) throws DataFormatException, IOException {
+    public ResponseEntity<AnimalView> createLostAnimal(@RequestPart(name = "animal") AnimalCreation animal,
+                                                       @RequestPart(name = "image1", required = false) MultipartFile image1,
+                                                       @RequestPart(name = "image2", required = false) MultipartFile image2,
+                                                       @RequestPart(name = "image3", required = false) MultipartFile image3,
+                                                       @RequestPart(name = "image4", required = false) MultipartFile image4) throws DataFormatException, IOException {
         animal.setImage1(image1);
         animal.setImage2(image2);
         animal.setImage3(image3);

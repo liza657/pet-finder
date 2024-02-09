@@ -5,6 +5,7 @@ import com.example.petfinder.model.entity.User;
 import com.example.petfinder.model.enums.Role;
 import com.example.petfinder.model.enums.Sex;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -22,9 +23,11 @@ public class AvatarRepositoryTests {
     @Autowired
     private UserRepository userRepository;
 
-    @Test
-    public void AvatarRepository_Save_ReturnSavedAvatar() {
-        User user = User.builder()
+    private User user;
+
+    @BeforeEach
+    public void createUser() {
+        user = User.builder()
                 .firstName("sfes")
                 .lastName("fse")
                 .sex(Sex.MALE)
@@ -35,13 +38,12 @@ public class AvatarRepositoryTests {
                 .phoneNumber("fgergfe")
                 .role(Role.USER)
                 .build();
+    }
 
-        Avatar avatar = Avatar.builder()
-                .name("s")
-                .user(user)
-                .type("f")
-                .imageData(getImageData())
-                .build();
+    @Test
+    public void AvatarRepository_Save_ReturnSavedAvatar() {
+        Avatar avatar = createAvatar();
+
         avatarRepository.save(avatar);
 
         Assertions.assertThat(avatar).isNotNull();
@@ -49,24 +51,7 @@ public class AvatarRepositoryTests {
 
     @Test
     public void AnimalRepository_FindByName_ReturnAvatar() {
-        User user = User.builder()
-                .firstName("sfes")
-                .lastName("fse")
-                .sex(Sex.MALE)
-                .biography("esfe")
-                .email("john.doe@example.com")
-                .birtDate(LocalDate.of(1990, 5, 15))
-                .password("fawerfwfeA234")
-                .phoneNumber("fgergfe")
-                .role(Role.USER)
-                .build();
-
-        Avatar avatar = Avatar.builder()
-                .name("s")
-                .user(user)
-                .type("f")
-                .imageData(getImageData())
-                .build();
+        Avatar avatar = createAvatar();
 
         userRepository.save(user);
         avatarRepository.save(avatar);
@@ -75,6 +60,15 @@ public class AvatarRepositoryTests {
 
         Assertions.assertThat(foundAvatar.getName()).isEqualTo("s");
 
+    }
+
+    private Avatar createAvatar() {
+        return Avatar.builder()
+                .name("s")
+                .user(user)
+                .type("f")
+                .imageData(getImageData())
+                .build();
     }
 
 
