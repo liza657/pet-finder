@@ -34,6 +34,8 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 
 public class UserServiceTests {
+
+    private final static String ACCESS_DENIED = "Access Denied";
     @Mock
     UserRepository userRepository;
 
@@ -91,10 +93,10 @@ public class UserServiceTests {
 
         when(userRepository.findUserByEmail(user.getEmail())).thenReturn(Optional.of(user));
 
-        if (authenticatedUser.getEmail().equals(user.getEmail())) {
-            userService.deleteUser(user.getId());
-
-        } else throw new PermissionException("Permission Denied");
+        if (!authenticatedUser.getEmail().equals(user.getEmail())) {
+            throw new PermissionException(ACCESS_DENIED);
+        }
+        userService.deleteUser(user.getId());
 
 
         verify(userRepository).deleteById(user.getId());
@@ -113,7 +115,7 @@ public class UserServiceTests {
 
         if (!updatedUser.getUsername().equals(currentUser.getUsername())) {
 
-            throw new PermissionException("Permission denied");
+            throw new PermissionException(ACCESS_DENIED);
         }
 
         UserView result = userService.updateUser(currentUser.getId(), userUpdateRequest);
