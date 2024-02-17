@@ -5,6 +5,7 @@ import com.example.petfinder.model.enums.Age;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,6 +15,7 @@ import java.math.BigDecimal;
 @Getter
 @ToString
 @AllArgsConstructor
+@Builder
 public class AnimalUpdating {
     private final String name;
 

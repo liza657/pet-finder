@@ -29,7 +29,7 @@ public abstract class AnimalMapper {
 
         return new AnimalCard(
                 animal.getName(),
-                animal.getAge().getValue(),
+                animal.getAge(),
                 animal.getWeight(),
                 animal.getSterilization(),
                 animal.getSex(),
@@ -51,7 +51,7 @@ public abstract class AnimalMapper {
 
         return new AnimalView(
                 animal.getName(),
-                animal.getAge().getValue(),
+                animal.getAge(),
                 animal.getWeight(),
                 animal.getStory(),
                 animal.getBreed(),

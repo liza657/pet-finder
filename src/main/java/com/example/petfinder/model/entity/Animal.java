@@ -16,6 +16,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "animal")
 public class Animal {
@@ -93,7 +94,4 @@ public class Animal {
     @JsonBackReference
     private User owner;
 
-    public Animal() {
-
-    }
 }

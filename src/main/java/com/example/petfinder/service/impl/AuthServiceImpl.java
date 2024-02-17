@@ -1,8 +1,8 @@
 package com.example.petfinder.service.impl;
 
-import com.example.petfinder.dto.user.response.AuthenticationResponse;
 import com.example.petfinder.dto.user.request.SignInRequest;
 import com.example.petfinder.dto.user.request.SignUpRequest;
+import com.example.petfinder.dto.user.response.AuthenticationResponse;
 import com.example.petfinder.dto.user.response.MessageResponse;
 import com.example.petfinder.exceptions.EntityNotExistsException;
 import com.example.petfinder.exceptions.InvalidTokenException;
@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class AuthServiceImpl implements AuthService {
 
-//    @Value(value = "${jwt.confirm_expiration}")
+    //    @Value(value = "${jwt.confirm_expiration}")
 //    private long confirmTokenExpiration;
 //
 //    @Value(value = "${jwt.access_expiration}")
@@ -69,21 +69,19 @@ public class AuthServiceImpl implements AuthService {
                 .isExpired(false)
                 .isCredentialsExpired(false)
                 .build();
+
         userService.createUser(user);
-        log.info("1");
+
         String confirmationToken = jwtService.generateToken(user);
-        log.info(confirmationToken);
-        log.info("Generated token length: {}", confirmationToken.length());
-        log.info(confirmationToken);
 
         saveUserConfirmationToken(user, confirmationToken);
-        log.info("2");
 
         sendEmail(user.getEmail(), confirmationToken);
-        log.info("3");
 
         System.out.println("confirmation token" + confirmationToken);
-        return new MessageResponse("Please check your email for confirmation.");
+//        return user;
+
+        return new MessageResponse("Please check your email for confirmation.", user.getUsername());
 
     }
 
@@ -134,7 +132,7 @@ public class AuthServiceImpl implements AuthService {
                 + "localhost:8080/auth/password/reset" + jwt);
         emailService.sendEmail(mailMessage);
         System.out.println(jwt);
-        return new MessageResponse("Please check your email for reset password.");
+        return new MessageResponse("Please check your email for reset password.", user.getUsername());
     }
 
     @Override

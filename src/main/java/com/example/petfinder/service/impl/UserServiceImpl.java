@@ -52,17 +52,11 @@ public class UserServiceImpl implements UserService {
         return userMapper.userToView(user);
     }
 
-    private void checkPermission(UUID userId) {
-
-        if (!getCurrentUser().getId().equals(userId)) {
-            throw new PermissionException();
-        }
-    }
-
 
     @Override
-    public void updateUser(UUID userId, UserUpdateRequest userUpdateRequest) {
+    public UserView updateUser(UUID userId, UserUpdateRequest userUpdateRequest) {
         User user = getCurrentUser();
+
         checkPermission(userId);
 
         user.setFirstName(userUpdateRequest.firstName());
@@ -71,6 +65,7 @@ public class UserServiceImpl implements UserService {
         user.setSex(userUpdateRequest.sex());
 
         saveUser(user);
+        return userMapper.userToView(user);
     }
 
     @Override
@@ -82,9 +77,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updatePassword(PasswordUpdateRequest passwordUpdateRequest, UserDetails userDetails) {
-        User user = findUserByUsername(userDetails.getUsername());
-
+    public void updatePassword(PasswordUpdateRequest passwordUpdateRequest) {
+        User user = getCurrentUser();
         if (!passwordEncoder.matches(passwordUpdateRequest.oldPassword(), user.getPassword())) {
             throw new InvalidPasswordException();
         }
@@ -114,6 +108,13 @@ public class UserServiceImpl implements UserService {
 
     private User findUserByUsername(String username) {
         return userRepository.findUserByEmail(username).orElseThrow(() -> new EntityNotExistsException(String.format(USER_NOT_FOUND, username)));
+    }
+
+    private void checkPermission(UUID userId) {
+
+        if (!getCurrentUser().getId().equals(userId)) {
+            throw new PermissionException();
+        }
     }
 
     private void saveUser(User user) {

@@ -4,6 +4,7 @@ import com.example.petfinder.dto.user.response.AuthenticationResponse;
 import com.example.petfinder.dto.user.request.SignInRequest;
 import com.example.petfinder.dto.user.request.SignUpRequest;
 import com.example.petfinder.dto.user.response.MessageResponse;
+import com.example.petfinder.model.entity.User;
 import com.example.petfinder.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -1,12 +1,14 @@
 package com.example.petfinder.dto.animal.respose;
 
 import com.example.petfinder.model.enums.*;
+import lombok.Builder;
 
 import java.math.BigDecimal;
 
+@Builder
 public record AnimalView(String name,
 
-                         String age,
+                         Age age,
 
                          BigDecimal weight,
 

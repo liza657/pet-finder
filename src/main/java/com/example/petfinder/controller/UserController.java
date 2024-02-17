@@ -37,13 +37,13 @@ public class UserController {
     }
 
     @PutMapping("password/update")
-    public void updatePassword(@RequestBody PasswordUpdateRequest passwordUpdateRequest, @AuthenticationPrincipal UserDetails userDetails) {
-        userService.updatePassword(passwordUpdateRequest, userDetails);
+    public void updatePassword(@RequestBody PasswordUpdateRequest passwordUpdateRequest) {
+        userService.updatePassword(passwordUpdateRequest);
     }
 
     @PutMapping("update/{userId}")
-    public void updateUser(@PathVariable("userId") UUID userId, @RequestBody UserUpdateRequest userUpdateRequest) {
-        userService.updateUser(userId, userUpdateRequest);
+    public ResponseEntity<UserView> updateUser(@PathVariable("userId") UUID userId, @RequestBody UserUpdateRequest userUpdateRequest) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(userId,userUpdateRequest));
     }
 
     @PostMapping("avatar/{userId}/upload")

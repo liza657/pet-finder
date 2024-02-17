@@ -1,8 +1,10 @@
 package com.example.petfinder.service;
 
 import com.example.petfinder.dto.animal.request.AnimalCreation;
+import com.example.petfinder.dto.animal.request.AnimalUpdating;
 import com.example.petfinder.dto.animal.respose.AnimalCard;
 import com.example.petfinder.dto.animal.respose.AnimalView;
+import com.example.petfinder.exceptions.PermissionException;
 import com.example.petfinder.mapper.AnimalMapper;
 import com.example.petfinder.model.entity.Animal;
 import com.example.petfinder.model.entity.User;
@@ -28,14 +30,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.zip.DataFormatException;
 
 import static com.example.petfinder.model.enums.Age.TWO;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
@@ -55,22 +56,19 @@ public class AnimalServiceTests {
 
     @InjectMocks
     private AnimalServiceImpl animalService;
+
     @Mock
     private SecurityContext securityContext;
 
     @Mock
     private Authentication authentication;
 
-
-    private User user;
-
     @BeforeEach
     public void setUp() {
         SecurityContextHolder.setContext(securityContext);
     }
 
-
-    public User createUser() {
+    private User createUser() {
         return User.builder()
                 .firstName("Liza")
                 .lastName("Doe")
@@ -84,7 +82,7 @@ public class AnimalServiceTests {
                 .build();
     }
 
-    public AnimalCreation createAnimalCreation() {
+    private AnimalCreation createAnimalCreation() {
         return AnimalCreation.builder()
                 .name("Fluffy")
                 .age(Age.TWO)
@@ -167,16 +165,119 @@ public class AnimalServiceTests {
 
     @Test
     public void AnimalService_DeleteById_ReturnAnimalIsNull() {
-        getAuthenticatedUser();
-
+        User user = getUser();
         Animal animal = createAnimal();
+        user.setAnimals(Collections.singleton(animal));
+
+        when(animalRepository.findById(animal.getId())).thenReturn(Optional.of(animal));
+        when(userRepository.findUserByEmail(user.getEmail())).thenReturn(Optional.of(user));
+
+
+        if (user.getAnimals().contains(animal)) {
+            animalService.deleteAnimal(animal.getId());
+
+        } else throw new PermissionException("Permission Denied");
+
+        verify(animalRepository).deleteById(animal.getId());
+    }
+
+    @Test
+    public void AnimalService_UpdateAnimal_ReturnAnimal() throws DataFormatException, IOException {
+        User user = getUser();
+        AnimalUpdating animalUpdate = createAnimalUpdating();
+        Animal animal = createAnimal();
+        AnimalView expectedAnimalView = createAnimalView();
+
+        user.setAnimals(Collections.singleton(animal));
+
+        when(userRepository.findUserByEmail(user.getEmail())).thenReturn(Optional.of(user));
+        when(animalRepository.findById(animal.getId())).thenReturn(Optional.of(animal));
+        when(animalRepository.save(any(Animal.class))).thenReturn(animal);
+        when(animalMapper.animalToView(any(Animal.class))).thenReturn(expectedAnimalView);
+
+        if (!user.getAnimals().contains(animal)) {
+            throw new PermissionException("Permission denied");
+
+        }
+        AnimalView result = animalService.updateAnimal(animal.getId(), animalUpdate);
+
+        assertNotNull(result);
+        assertEquals(expectedAnimalView, result);
+
+        verify(animalRepository, times(1)).save(any(Animal.class));
+        verify(animalMapper, times(1)).animalToView(any(Animal.class));
+
+
+    }
+
+    @Test
+    public void AnimalService_GetAllFavoriteAnimals_ReturnMoreThanOne() {
+        User user = getUser();
+        Animal animal1 = createAnimal();
+        Animal animal2 = createAnimal();
+
+        List<Animal> favoriteAnimals = new ArrayList<>();
+        favoriteAnimals.add(animal1);
+        favoriteAnimals.add(animal2);
+        user.setFavoriteAnimals(favoriteAnimals);
+
+        when(userRepository.findUserByEmail(user.getEmail())).thenReturn(Optional.of(user));
+        when(animalMapper.animalToCard(any())).thenAnswer(invocation -> {
+            Animal animal = invocation.getArgument(0);
+            return createAnimalCard();
+        });
+
+        Set<AnimalCard> result = animalService.getFavoriteAnimals();
+
+        verify(animalMapper, times(2)).animalToCard(any());
+        Assertions.assertThat(result).isNotNull();
+    }
+
+    @Test
+    public void AnimalService_AddToFavorite_Successfully() {
+        User user = getUser();
+        Animal animal = createAnimal();
+
+        when(userRepository.findUserByEmail(user.getEmail())).thenReturn(Optional.of(user));
+        when(animalRepository.findById(animal.getId())).thenReturn(Optional.of(animal));
+//        when(userRepository.save(user)).thenReturn(user);
+
+        animalService.addToFavorite(animal.getId());
+
+        verify(userRepository, times(1)).findUserByEmail(user.getUsername());
+        verify(animalRepository, times(1)).findById(animal.getId());
+        verify(userRepository, times(1)).save(user);
+//        assertTrue(user.getFavoriteAnimals().contains(animal));
+
+        // Test if trying to add the same animal again throws the expected exception
+//        assertThrows(EntityIsAlreadyExists.class, () -> animalService.addToFavorite(animal.getId()));
+    }
+
+
+    @Test
+    public void AnimalService_DeleteFromFavorite_Successfully() {
+        User user = getUser();
+        Animal animal = createAnimal();
+
+        when(userRepository.findUserByEmail(user.getEmail())).thenReturn(Optional.of(user));
         when(animalRepository.findById(animal.getId())).thenReturn(Optional.of(animal));
 
-        // Act
-        animalService.deleteAnimal(animal.getId());
 
-        // Assert
-        verify(animalRepository).deleteById(animal.getId());
+        verify(userRepository).save(user);
+        verify(animalRepository).findById(animal.getId());
+        assertTrue(user.getFavoriteAnimals().isEmpty());
+    }
+
+    private User getUser() {
+        SecurityContext securityContext = mock(SecurityContext.class);
+        Authentication authentication = mock(Authentication.class);
+
+        when(authentication.getName()).thenReturn("elizabeth@gmail.com");
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+
+        SecurityContextHolder.setContext(securityContext);
+
+        return createUser();
     }
 
     private void getAuthenticatedUser() {
@@ -188,7 +289,7 @@ public class AnimalServiceTests {
 
         SecurityContextHolder.setContext(securityContext);
 
-        User mockUser = new User();
+        User mockUser = createUser();
         when(userRepository.findUserByEmail(anyString())).thenReturn(Optional.of(mockUser));
     }
 
@@ -204,12 +305,24 @@ public class AnimalServiceTests {
                 .sterilization(Sterilization.FALSE)
                 .type(Type.CAT)
                 .weight(BigDecimal.ONE)
-                .owner(user)
                 .age(TWO).build();
     }
 
     private AnimalView createAnimalView() {
         return AnimalView.builder()
+                .name("Kyrylo")
+                .story("small cat")
+                .breed("fef")
+                .sex(Sex.MALE)
+                .size(Size.MIDDLE)
+                .sterilization(Sterilization.FALSE)
+                .type(Type.CAT)
+                .weight(BigDecimal.ONE)
+                .age(TWO).build();
+    }
+
+    private AnimalUpdating createAnimalUpdating() {
+        return AnimalUpdating.builder()
                 .name("Kyrylo")
                 .story("small cat")
                 .breed("fef")

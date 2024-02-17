@@ -11,7 +11,6 @@ import com.example.petfinder.exceptions.PermissionException;
 import com.example.petfinder.mapper.AnimalMapper;
 import com.example.petfinder.mapper.ImageMapper;
 import com.example.petfinder.model.entity.Animal;
-import com.example.petfinder.model.entity.Image;
 import com.example.petfinder.model.entity.User;
 import com.example.petfinder.model.enums.Status;
 import com.example.petfinder.repository.AnimalRepository;
@@ -30,8 +29,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.Period;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -130,33 +127,15 @@ public class AnimalServiceImpl implements AnimalService {
 
 
     private void copyUpdateFieldsToAnimal(AnimalUpdating animalUpdating, Animal animal) throws IOException {
-        Image image1 = (animalUpdating.getImage1() != null) ? imageMapper.multiPartFileToImage(animalUpdating.getImage1()) : null;
-        if (image1 != null) {
-            image1 = imageRepository.save(image1);
-        }
+        animal.setImage1(animalUpdating.getImage1() != null ? imageRepository.save(imageMapper.multiPartFileToImage(animalUpdating.getImage1())) : null);
+        animal.setImage2(animalUpdating.getImage2() != null ? imageRepository.save(imageMapper.multiPartFileToImage(animalUpdating.getImage2())) : null);
+        animal.setImage3(animalUpdating.getImage3() != null ? imageRepository.save(imageMapper.multiPartFileToImage(animalUpdating.getImage3())) : null);
+        animal.setImage4(animalUpdating.getImage4() != null ? imageRepository.save(imageMapper.multiPartFileToImage(animalUpdating.getImage4())) : null);
 
-        Image image2 = (animalUpdating.getImage2() != null) ? imageMapper.multiPartFileToImage(animalUpdating.getImage2()) : null;
-        if (image2 != null) {
-            image2 = imageRepository.save(image2);
-        }
-
-        Image image3 = (animalUpdating.getImage3() != null) ? imageMapper.multiPartFileToImage(animalUpdating.getImage3()) : null;
-        if (image3 != null) {
-            image3 = imageRepository.save(image3);
-        }
-
-        Image image4 = (animalUpdating.getImage4() != null) ? imageMapper.multiPartFileToImage(animalUpdating.getImage4()) : null;
-        if (image4 != null) {
-            image4 = imageRepository.save(image4);
-        }
         animal.setName(animalUpdating.getName());
         animal.setType(animalUpdating.getType());
         animal.setWeight(animalUpdating.getWeight());
         animal.setAge(animalUpdating.getAge());
-        animal.setImage1(image1);
-        animal.setImage2(image2);
-        animal.setImage3(image3);
-        animal.setImage4(image4);
         animal.setSterilization(animalUpdating.getSterilization());
         animal.setStory(animalUpdating.getStory());
         animal.setBreed(animalUpdating.getBreed());
