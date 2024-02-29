@@ -79,7 +79,6 @@ public class AuthServiceImpl implements AuthService {
         sendEmail(user.getEmail(), confirmationToken);
 
         System.out.println("confirmation token" + confirmationToken);
-//        return user;
 
         return new MessageResponse("Please check your email for confirmation.", user.getUsername());
 
