@@ -28,15 +28,3 @@ public class PasswordMatchingValidator implements ConstraintValidator<PasswordMa
 }
 
 
-//    @Override
-//    public boolean isValid(SignUpRequest signUpRequest, ConstraintValidatorContext constraintValidatorContext) {
-//        if (signUpRequest.password() == null || signUpRequest.matchingPassword() == null) {
-//            return false;
-//        }
-//
-//        if (!signUpRequest.password().equals(signUpRequest.matchingPassword())) {
-//            throw new PasswordMatchingException("Passwords don't match");
-//        }
-//
-//        return true;
-//    }
