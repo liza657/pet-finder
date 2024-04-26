@@ -65,7 +65,6 @@ public class UserServiceTests {
         User user = createUser();
         UserView userView = createUserView();
 
-
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
         when(userService.getUserById(user.getId())).thenReturn(userView);
 

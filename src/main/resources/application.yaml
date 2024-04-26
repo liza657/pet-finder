@@ -20,7 +20,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: grow.and.pull@gmail.com
-    password: lmwa ugxz mtam nxvw
+    password: oskq buek gjwr nwmd
     properties:
       mail:
         smtp:
