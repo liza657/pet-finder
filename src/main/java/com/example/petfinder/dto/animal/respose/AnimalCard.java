@@ -8,6 +8,7 @@ import com.example.petfinder.model.enums.Type;
 import lombok.Builder;
 
 import java.math.BigDecimal;
+
 @Builder
 public record AnimalCard(String name,
 
