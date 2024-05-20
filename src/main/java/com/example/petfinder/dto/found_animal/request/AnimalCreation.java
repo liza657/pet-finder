@@ -16,6 +16,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 public class AnimalCreation {
+
     private final String name;
 
     private final String distinguishingFeatures;
