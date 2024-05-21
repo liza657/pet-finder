@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Builder
 public class AnimalCreation {
+
     private final String name;
 
     private final Age age;

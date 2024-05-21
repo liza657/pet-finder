@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 
 
 @Getter
+@Setter
 @ToString
 @AllArgsConstructor
 public class AnimalUpdating {
@@ -70,19 +72,5 @@ public class AnimalUpdating {
 
     }
 
-    public void setImage1(MultipartFile image1) {
-        this.image1 = image1;
-    }
 
-    public void setImage2(MultipartFile image2) {
-        this.image2 = image2;
-    }
-
-    public void setImage3(MultipartFile image3) {
-        this.image3 = image3;
-    }
-
-    public void setImage4(MultipartFile image4) {
-        this.image4 = image4;
-    }
 }
