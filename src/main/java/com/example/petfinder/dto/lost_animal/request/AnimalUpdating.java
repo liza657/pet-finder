@@ -25,26 +25,19 @@ public class AnimalUpdating {
 
     private final LocalDate foundAt;
 
-
     private final Sex sex;
 
     private final Size size;
 
-
     private final Age age;
-
 
     private final Type type;
 
-
     private final LostAnimalStatus status;
-
 
     private MultipartFile image1;
 
-
     private MultipartFile image2;
-
 
     private MultipartFile image3;
 
